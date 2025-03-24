@@ -11,6 +11,6 @@ public class ChatHub : Hub<IChatClient>
 {
     public async Task SendMessage(string message)
     {
-        await Clients.AllExcept(Context.ConnectionId).ReceiveMessage(message);
+        await Clients.Others.ReceiveMessage(message);
     }
 }
