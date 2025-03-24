@@ -78,13 +78,12 @@
             domDiv.scrollIntoView({ behavior: "smooth"});
         }
         function connectSignalR() {
-            // TODO: open signalR connection
-            const userId = crypto.randomUUID(); // For identification of the user
+            // TODO: open signalR connectionntification of the user
             const connection = new signalR.HubConnectionBuilder().withUrl('/Chat').build();
             
             // TODO: use addMessage(message, isMe) to add new messages to the chat interface
-            connection.on('ReceiveMessage', (messageUserId, message) => {
-                addMessage(message, messageUserId === userId);
+            connection.on('ReceiveMessage', (message) => {
+                addMessage(message, false);
             });
             
             postMessageForm.addEventListener("submit", (e) => {
@@ -92,7 +91,8 @@
                 const message = document.getElementById("post-message");
                 
                 // TODO: Send the message to the backend
-                connection.invoke('SendMessage', userId, message.value);
+                connection.invoke('SendMessage', message.value);
+                addMessage(message.value, true);
                 
                 e.target.reset();
             });
